@@ -25,7 +25,7 @@ export default function MarketChart({ data, title, color, prefix = '', suffix = 
       <div className="flex items-center justify-between mb-4">
         <div>
           <h4 className="text-sm font-medium text-zinc-400">{title}</h4>
-          <p className="text-xl font-bold text-white">{prefix}{last.toLocaleString()}{suffix}</p>
+          <p className="text-xl font-bold text-white">{prefix}{last.toLocaleString('en-US')}{suffix}</p>
         </div>
         <span className={`text-sm font-semibold px-2 py-1 rounded-md ${
           isPositive ? 'text-emerald-400 bg-emerald-950' : 'text-red-400 bg-red-950'
@@ -46,7 +46,7 @@ export default function MarketChart({ data, title, color, prefix = '', suffix = 
           <YAxis hide domain={['dataMin - 1', 'dataMax + 1']} />
           <Tooltip
             contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '8px', fontSize: '12px' }}
-            formatter={(value) => [`${prefix}${Number(value).toLocaleString()}${suffix}`, title]}
+            formatter={(value) => [`${prefix}${Number(value).toLocaleString('en-US')}${suffix}`, title]}
           />
           <Area type="monotone" dataKey="value" stroke={color} fill={`url(#grad-${title.replace(/\s/g, '')})`} strokeWidth={2} dot={false} />
         </AreaChart>
