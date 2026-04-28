@@ -14,16 +14,16 @@ import type {
 export function getMarketIndices(): MarketIndex[] {
   return [
     { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' }, // Keeping JSE All Share as is, no search result
-    { name: 'JSE Top 40', symbol: 'JTOPI', value: 93697.20, change: -18002.8, changePercent: -16.12, currency: 'ZAR' },
+    { name: 'JSE Top 40', symbol: 'JTOPI', value: 93697.20, change: 0, changePercent: 0, currency: 'ZAR' },
     { name: 'S&P 500', symbol: 'SPX', value: 7165.08, change: 0, changePercent: 0, currency: 'USD' },
-    { name: 'NASDAQ', symbol: 'IXIC', value: 24438.50, change: 1535.61, changePercent: 6.71, currency: 'USD' },
+    { name: 'NASDAQ', symbol: 'IXIC', value: 24875.53, change: 437.03, changePercent: 1.79, currency: 'USD' },
     { name: 'FTSE 100', symbol: 'UKX', value: 8320, change: -28, changePercent: -0.34, currency: 'GBP' },
   ];
 }
 
 export function getCurrencyPairs(): CurrencyPair[] {
   return [
-    { pair: 'ZAR/USD', rate: 16.5289, change: 0.1789, changePercent: 1.09 },
+    { pair: 'ZAR/USD', rate: 16.5289, change: 0, changePercent: 0 },
     { pair: 'ZAR/EUR', rate: 20.18, change: -0.08, changePercent: -0.40 },
     { pair: 'ZAR/GBP', rate: 23.45, change: 0.12, changePercent: 0.51 },
   ];
@@ -31,10 +31,10 @@ export function getCurrencyPairs(): CurrencyPair[] {
 
 export function getCommodities(): Commodity[] {
   return [
-    { name: 'Gold', symbol: 'XAU', price: 4676.40, change: -32.40, changePercent: -0.69, unit: '$/oz' },
-    { name: 'Platinum', symbol: 'XPT', price: 2115.40, change: 83.55, changePercent: 4.11, unit: '$/oz' },
+    { name: 'Gold', symbol: 'XAU', price: 3770.00, change: -906.40, changePercent: -19.38, unit: '$/oz' },
+    { name: 'Platinum', symbol: 'XPT', price: 2030.00, change: -85.40, changePercent: -4.03, unit: '$/oz' },
     { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Keeping Palladium as is, no search result
-    { name: 'Brent Crude', symbol: 'BRN', price: 106.93, change: 1.60, changePercent: 1.52, unit: '$/bbl' },
+    { name: 'Brent Crude', symbol: 'BRN', price: 108.98, change: 2.05, changePercent: 1.92, unit: '$/bbl' },
   ];
 }
 
@@ -52,7 +52,7 @@ export function getZARHistory(): HistoricalPoint[] {
     { date: '2026-01', value: 18.90 },
     { date: '2026-02', value: 18.55 },
     { date: '2026-03', value: 18.40 },
-    { date: '2026-03', value: 18.40 },
+    { date: '2026-04', value: 16.5289 },
     { date: '2026-04', value: 16.5289 },
   ];
 }
@@ -70,7 +70,7 @@ export function getJSEHistory(): HistoricalPoint[] {
     { date: '2026-01', value: 76100 },
     { date: '2026-02', value: 75300 },
     { date: '2026-03', value: 76800 },
-    { date: '2026-03', value: 76800 },
+    { date: '2026-04', value: 93697.20 },
     { date: '2026-04', value: 93697.20 },
   ];
 }
