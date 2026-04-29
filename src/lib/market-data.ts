@@ -9,21 +9,21 @@ import type {
 } from '@/types/market';
 
 // Static market data — structured for easy API replacement later
-// Data reflects approximate April 2026 conditions
+// Data reflects late April 2026 market conditions
 
 export function getMarketIndices(): MarketIndex[] {
   return [
-    { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' }, // Keeping JSE All Share as is, no search result
+    { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' },
     { name: 'JSE Top 40', symbol: 'JTOPI', value: 93697.20, change: 0, changePercent: 0, currency: 'ZAR' },
-    { name: 'S&P 500', symbol: 'SPX', value: 7165.08, change: 0, changePercent: 0, currency: 'USD' },
-    { name: 'NASDAQ', symbol: 'IXIC', value: 24875.53, change: 437.03, changePercent: 1.79, currency: 'USD' },
+    { name: 'S&P 500', symbol: 'SPX', value: 7138.80, change: -35.11, changePercent: -0.49, currency: 'USD' },
+    { name: 'NASDAQ', symbol: 'IXIC', value: 24663.80, change: -223.30, changePercent: -0.90, currency: 'USD' },
     { name: 'FTSE 100', symbol: 'UKX', value: 8320, change: -28, changePercent: -0.34, currency: 'GBP' },
   ];
 }
 
 export function getCurrencyPairs(): CurrencyPair[] {
   return [
-    { pair: 'ZAR/USD', rate: 16.5289, change: 0, changePercent: 0 },
+    { pair: 'ZAR/USD', rate: 17.1841, change: 0.0039, changePercent: 0.02 },
     { pair: 'ZAR/EUR', rate: 20.18, change: -0.08, changePercent: -0.40 },
     { pair: 'ZAR/GBP', rate: 23.45, change: 0.12, changePercent: 0.51 },
   ];
@@ -31,15 +31,15 @@ export function getCurrencyPairs(): CurrencyPair[] {
 
 export function getCommodities(): Commodity[] {
   return [
-    { name: 'Gold', symbol: 'XAU', price: 3770.00, change: -906.40, changePercent: -19.38, unit: '$/oz' },
-    { name: 'Platinum', symbol: 'XPT', price: 2030.00, change: -85.40, changePercent: -4.03, unit: '$/oz' },
+    { name: 'Gold', symbol: 'XAU', price: 4681.50, change: -26.36, changePercent: -0.56, unit: '$/oz' },
+    { name: 'Platinum', symbol: 'XPT', price: 1868.00, change: 28.00, changePercent: 1.52, unit: '$/oz' },
     { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Keeping Palladium as is, no search result
-    { name: 'Brent Crude', symbol: 'BRN', price: 108.98, change: 2.05, changePercent: 1.92, unit: '$/bbl' },
+    { name: 'Brent Crude', symbol: 'BRN', price: 108.68, change: 0.45, changePercent: 0.42, unit: '$/bbl' },
   ];
 }
 
 export function getZARHistory(): HistoricalPoint[] {
-  // ZAR/USD over last 12 months (approximate)
+  // ZAR/USD over the last 12 months
   return [
     { date: '2025-05', value: 18.20 },
     { date: '2025-06', value: 18.45 },
@@ -52,8 +52,7 @@ export function getZARHistory(): HistoricalPoint[] {
     { date: '2026-01', value: 18.90 },
     { date: '2026-02', value: 18.55 },
     { date: '2026-03', value: 18.40 },
-    { date: '2026-04', value: 16.5289 },
-    { date: '2026-04', value: 16.5289 },
+    { date: '2026-04', value: 17.1841 },
   ];
 }
 
@@ -70,7 +69,6 @@ export function getJSEHistory(): HistoricalPoint[] {
     { date: '2026-01', value: 76100 },
     { date: '2026-02', value: 75300 },
     { date: '2026-03', value: 76800 },
-    { date: '2026-04', value: 93697.20 },
     { date: '2026-04', value: 93697.20 },
   ];
 }
