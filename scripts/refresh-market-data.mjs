@@ -68,17 +68,52 @@ async function fetchJson(url, { retries = 3 } = {}) {
   throw lastError;
 }
 
-/** Returns { price, previousClose } for a Yahoo Finance symbol. */
-async function fetchYahooQuote(symbol) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=5d&interval=1d`;
-  const data = await fetchJson(url);
-  const meta = data?.chart?.result?.[0]?.meta;
-  const price = meta?.regularMarketPrice;
-  const previousClose = meta?.chartPreviousClose ?? meta?.previousClose ?? price;
-  if (!Number.isFinite(price) || price <= 0) {
-    throw new Error(`No usable price for ${symbol}`);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Returns { price, previousClose } for a Yahoo Finance symbol.
+ *
+ * Yahoo rate-limits CI runner IPs (HTTP 429) but lets requests through
+ * intermittently — verified in run 27287482448 where one of 36 rapid
+ * requests succeeded. So: alternate query1/query2 hosts, honor
+ * Retry-After, and back off long and jittered. A cron job can afford
+ * minutes of patience.
+ */
+async function fetchYahooQuote(symbol, { attempts = 5 } = {}) {
+  let lastError;
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const host = attempt % 2 === 0 ? 'query1' : 'query2';
+    const url = `https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=5d&interval=1d`;
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.status === 429) {
+        lastError = new Error(`HTTP 429 from ${host} for ${symbol}`);
+        const retryAfter = Number(res.headers.get('retry-after'));
+        const wait =
+          Number.isFinite(retryAfter) && retryAfter > 0
+            ? Math.min(retryAfter * 1000, 60_000)
+            : 8_000 + 8_000 * attempt + Math.random() * 4_000;
+        await sleep(wait);
+        continue;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      const data = await res.json();
+      const meta = data?.chart?.result?.[0]?.meta;
+      const price = meta?.regularMarketPrice;
+      const previousClose = meta?.chartPreviousClose ?? meta?.previousClose ?? price;
+      if (!Number.isFinite(price) || price <= 0) {
+        throw new Error(`No usable price for ${symbol}`);
+      }
+      return { price, previousClose };
+    } catch (err) {
+      lastError = err;
+      await sleep(2_000);
+    }
   }
-  return { price, previousClose };
+  throw lastError;
 }
 
 /**
@@ -248,6 +283,8 @@ async function main() {
       failed++;
       log('FAIL', item.symbol, `${yahooSymbol}: ${err.message} (keeping previous value)`);
     }
+    // Space out Yahoo requests — rapid-fire is what triggers the 429s.
+    await sleep(5_000);
   }
 
   // History series driven by Yahoo values that may have just updated.
