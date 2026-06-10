@@ -15,15 +15,17 @@ The workflow `.github/workflows/refresh-market-data.yml` keeps `src/data/market-
 
 ## Data sources (free, no API keys)
 
-| Series | Primary source | Fallback |
+| Series | Primary source | Fallbacks |
 |---|---|---|
 | USD/EUR/GBP → ZAR | open.er-api.com | — |
-| S&P 500 / NASDAQ / FTSE | Stooq (`^spx` / `^ndq` / `^ukx`) | Yahoo Finance |
-| Gold / Platinum / Palladium / Brent | Stooq (`xauusd` / `xptusd` / `xpdusd` / `cb.f`) | Yahoo Finance |
+| S&P 500 / NASDAQ / FTSE | CNBC (`.SPX` / `.IXIC` / `.FTSE`) | Stooq, then Yahoo |
+| Gold / Platinum / Palladium / Brent | CNBC futures (`@GC.1` / `@PL.1` / `@PA.1` / `@LCO.1`) | Stooq, then Yahoo |
 | JSE All Share / Top 40 | Yahoo Finance (`^J203.JO` / `^J200.JO`) — **only source** | — |
 
+Source order was settled empirically (runs 1–5 on 2026-06-10): Yahoo HTTP-429s GitHub runner IPs almost always, Stooq HTTP-404s datacenter IPs entirely, CNBC's public restQuote endpoint works reliably and serves everything in one batched request. Stooq/Yahoo still matter for local `npm run refresh-data` runs from residential IPs.
+
 > [!warning] JSE caveat — verified during testing
-> Yahoo Finance rate-limits GitHub Actions runner IPs (HTTP 429), and it is the only free keyless source for JSE indices. The JSE values therefore update only when Yahoo lets a request through; on other runs they keep their previous values (clearly logged). Everything else updates reliably via Stooq. If JSE staleness becomes a problem, the cleanest fix is a free API key from a provider that covers the JSE (e.g. Marketstack/EODHD) wired in as another source.
+> Yahoo is the only free keyless source for JSE indices and it rate-limits CI runners, so the two JSE values update only when a request slips through (the script retries patiently with backoff across query1/query2). On other runs they keep their previous values — clearly logged, never silently wrong. If JSE staleness becomes a problem, the cleanest fix is a free API key from a provider that covers the JSE (e.g. Marketstack/EODHD) wired in as another source.
 
 ## Failure behavior (by design)
 
