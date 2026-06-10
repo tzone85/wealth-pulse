@@ -3,76 +3,47 @@ import type {
   CurrencyPair,
   Commodity,
   HistoricalPoint,
+  MarketSnapshot,
   CompoundResult,
   PhaseInfo,
   OpportunityPlatform,
 } from '@/types/market';
+import snapshotJson from '@/data/market-snapshot.json';
 
-// Static market data — structured for easy API replacement later
-// Data reflects current mid-May 2026 market conditions
+// Market data is read from a JSON snapshot that is refreshed automatically
+// by .github/workflows/refresh-market-data.yml (see docs/Market-Data-Pipeline.md).
+const snapshot = snapshotJson as MarketSnapshot;
+
+export function getSnapshotUpdatedAt(): string {
+  return snapshot.updatedAt;
+}
 
 export function getMarketIndices(): MarketIndex[] {
-  return [
-    { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' },
-    { name: 'JSE Top 40', symbol: 'JTOPI', value: 109063.5, change: -1680.58, changePercent: -1.52, currency: 'ZAR' },
-    { name: 'S&P 500', symbol: 'SPX', value: 7501.24, change: 56.99, changePercent: 0.77, currency: 'USD' },
-    { name: 'NASDAQ', symbol: 'IXIC', value: 26635.22, change: 232.88, changePercent: 0.88, currency: 'USD' },
-    { name: 'FTSE 100', symbol: 'UKX', value: 8320, change: -28, changePercent: -0.34, currency: 'GBP' },
-  ];
+  return snapshot.indices;
 }
 
 export function getCurrencyPairs(): CurrencyPair[] {
-  return [
-    { pair: 'ZAR/USD', rate: 0.06233, change: 0.00029, changePercent: 0.47 },
-    { pair: 'ZAR/EUR', rate: 20.18, change: -0.08, changePercent: -0.40 },
-    { pair: 'ZAR/GBP', rate: 23.45, change: 0.12, changePercent: 0.51 },
-  ];
+  return snapshot.currencies;
 }
 
 export function getCommodities(): Commodity[] {
-  return [
-    { name: 'Gold', symbol: 'XAU', price: 4539.3, change: -111.7, changePercent: -2.4, unit: '$/oz' },
-    { name: 'Platinum', symbol: 'XPT', price: 2043, change: -11, changePercent: -0.54, unit: '$/oz' },
-    { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Keeping Palladium as is, no search result
-    { name: 'Brent Crude', symbol: 'BRN', price: 106.57, change: -0.09, changePercent: -0.08, unit: '$/bbl' },
-  ];
+  return snapshot.commodities;
 }
 
 export function getZARHistory(): HistoricalPoint[] {
-  // USD/ZAR over the last 12 months
-  return [
-    { date: '2025-05', value: 18.20 },
-    { date: '2025-06', value: 18.45 },
-    { date: '2025-07', value: 17.95 },
-    { date: '2025-08', value: 18.60 },
-    { date: '2025-09', value: 18.80 },
-    { date: '2025-10', value: 19.10 },
-    { date: '2025-11', value: 18.70 },
-    { date: '2025-12', value: 18.35 },
-    { date: '2026-01', value: 18.90 },
-    { date: '2026-02', value: 18.55 },
-    { date: '2026-03', value: 18.40 },
-    { date: '2026-04', value: 16.8975 },
-    { date: '2026-05', value: 16.0436 },
-  ];
+  return snapshot.history.usdZar;
 }
 
 export function getJSEHistory(): HistoricalPoint[] {
-  return [
-    { date: '2025-05', value: 74200 },
-    { date: '2025-06', value: 73800 },
-    { date: '2025-07', value: 75100 },
-    { date: '2025-08', value: 74600 },
-    { date: '2025-09', value: 76200 },
-    { date: '2025-10', value: 75400 },
-    { date: '2025-11', value: 74900 },
-    { date: '2025-12', value: 75800 },
-    { date: '2026-01', value: 76100 },
-    { date: '2026-02', value: 75300 },
-    { date: '2026-03', value: 76800 },
-    { date: '2026-04', value: 93697.2 },
-    { date: '2026-05', value: 109063.5 },
-  ];
+  return snapshot.history.jseTop40;
+}
+
+export function getGoldHistory(): HistoricalPoint[] {
+  return snapshot.history.gold;
+}
+
+export function getPlatinumHistory(): HistoricalPoint[] {
+  return snapshot.history.platinum;
 }
 
 export function calculateCompoundGrowth(

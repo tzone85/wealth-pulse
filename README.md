@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WealthPulse
 
-## Getting Started
+Personal investment dashboard for the journey from **R100 to financial independence** — South African + global markets, compound-growth planning, and income opportunities. Built with Next.js 16, React 19, Tailwind 4, and Recharts.
 
-First, run the development server:
+> **Private project.** This repo should be kept **private** on GitHub (it tracks a personal financial plan), and the deployed site is `noindex` + crawler-blocked. See [docs/Production-Readiness.md](docs/Production-Readiness.md).
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script | What it does |
+|---|---|
+| `npm run dev` | Dev server on port 3000 |
+| `npm run build` / `start` | Production build / serve |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript, no emit |
+| `npm test` | Vitest unit tests |
+| `npm run refresh-data` | Fetch live market data into the snapshot (needs internet) |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How market data works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All market values live in **`src/data/market-snapshot.json`**, refreshed automatically by a GitHub Actions cron (`.github/workflows/refresh-market-data.yml`) on weekdays at 07:15 and 17:15 SAST using free, keyless APIs (open.er-api.com + Yahoo Finance). The schedule only fires from `main`. Full runbook: [docs/Market-Data-Pipeline.md](docs/Market-Data-Pipeline.md).
 
-## Learn More
+## Docs / Obsidian
 
-To learn more about Next.js, take a look at the following resources:
+Project docs live in [`docs/`](docs/Home.md) and are written as an **Obsidian vault** (wikilinks, frontmatter, callouts):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Home](docs/Home.md) — index
+- [Architecture](docs/Architecture.md)
+- [Market-Data-Pipeline](docs/Market-Data-Pipeline.md) — cron runbook
+- [Production-Readiness](docs/Production-Readiness.md) — privacy & deploy checklist
+- [Money-Plan](docs/Money-Plan.md) — Phase 0 action plan
+- [Obsidian-Setup](docs/Obsidian-Setup.md) — how to open these notes in Obsidian
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## CI
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`.github/workflows/ci.yml` runs lint, typecheck, tests, and build on pushes to `main` / `claude/**` and on PRs. Snapshot-shape tests guard against the cron ever committing malformed data.

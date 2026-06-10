@@ -2,7 +2,7 @@
 
 import MetricCard from '@/components/MetricCard';
 import MarketChart from '@/components/MarketChart';
-import { getMarketIndices, getCurrencyPairs, getCommodities, getZARHistory, getJSEHistory } from '@/lib/market-data';
+import { getMarketIndices, getCurrencyPairs, getCommodities, getZARHistory, getJSEHistory, getGoldHistory, getPlatinumHistory } from '@/lib/market-data';
 import { formatNumber } from '@/lib/utils';
 
 export default function Markets() {
@@ -11,16 +11,8 @@ export default function Markets() {
   const commodities = getCommodities();
   const zarHistory = getZARHistory();
   const jseHistory = getJSEHistory();
-
-  // Generate gold and platinum history from base data
-  const goldHistory = zarHistory.map((p, i) => ({
-    date: p.date,
-    value: 2200 + Math.round(i * 14 + Math.sin(i * 0.8) * 40),
-  }));
-  const platinumHistory = zarHistory.map((p, i) => ({
-    date: p.date,
-    value: 980 + Math.round(i * 6 + Math.cos(i * 0.6) * 25),
-  }));
+  const goldHistory = getGoldHistory();
+  const platinumHistory = getPlatinumHistory();
 
   return (
     <div className="space-y-8">
@@ -97,7 +89,7 @@ export default function Markets() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <MarketChart data={zarHistory} title="ZAR/USD (12 months)" color="#60a5fa" prefix="R" />
+        <MarketChart data={zarHistory} title="USD/ZAR (12 months)" color="#60a5fa" prefix="R" />
         <MarketChart data={jseHistory} title="JSE Top 40 (12 months)" color="#34d399" />
         <MarketChart data={goldHistory} title="Gold (12 months)" color="#fbbf24" prefix="$" suffix="/oz" />
         <MarketChart data={platinumHistory} title="Platinum (12 months)" color="#a78bfa" prefix="$" suffix="/oz" />

@@ -28,6 +28,20 @@ export interface HistoricalPoint {
   value: number;
 }
 
+export interface MarketSnapshot {
+  updatedAt: string;
+  source: string;
+  indices: MarketIndex[];
+  currencies: CurrencyPair[];
+  commodities: Commodity[];
+  history: {
+    usdZar: HistoricalPoint[];
+    jseTop40: HistoricalPoint[];
+    gold: HistoricalPoint[];
+    platinum: HistoricalPoint[];
+  };
+}
+
 export interface CompoundResult {
   month: number;
   invested: number;

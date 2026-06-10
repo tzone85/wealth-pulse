@@ -11,6 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "WealthPulse — Investment Dashboard",
   description: "Track investments, market conditions, and compound growth. Built for South African investors starting small.",
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
