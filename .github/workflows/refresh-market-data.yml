@@ -7,6 +7,10 @@ on:
     - cron: '15 5 * * 1-5'
     - cron: '15 15 * * 1-5'
   workflow_dispatch:
+  # TEMPORARY: end-to-end test trigger, remove after verification.
+  push:
+    branches: ['claude/nice-hamilton-3n8ro2']
+    paths: ['.github/workflows/refresh-market-data.yml']
 
 permissions:
   contents: write
