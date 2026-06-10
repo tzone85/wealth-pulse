@@ -2,9 +2,13 @@
 /**
  * Refreshes src/data/market-snapshot.json with live market data.
  *
- * Sources (both free, no API key):
+ * Sources (all free, no API key):
  *   - FX rates:            https://open.er-api.com (daily ECB-style rates)
- *   - Indices/commodities: Yahoo Finance chart API
+ *   - Indices/commodities: Stooq CSV API (primary), Yahoo Finance (fallback)
+ *
+ * Stooq is primary because Yahoo rate-limits GitHub Actions runner IPs
+ * (HTTP 429). The JSE indices are only available on Yahoo, so they keep
+ * their previous values whenever Yahoo throttles us.
  *
  * Designed to run unattended in GitHub Actions. Partial failures are
  * tolerated: any series that cannot be fetched keeps its previous value.
@@ -16,15 +20,24 @@ import { fileURLToPath } from 'node:url';
 
 const SNAPSHOT_PATH = fileURLToPath(new URL('../src/data/market-snapshot.json', import.meta.url));
 
-// Yahoo Finance symbols for each series we track.
+// Stooq symbols (primary source; daily-history CSV endpoint).
+const STOOQ_SYMBOLS = {
+  SPX: '^spx', // S&P 500
+  IXIC: '^ndq', // NASDAQ Composite
+  UKX: '^ukx', // FTSE 100
+  XAU: 'xauusd', // gold spot
+  XPT: 'xptusd', // platinum spot
+  XPD: 'xpdusd', // palladium spot
+  BRN: 'cb.f', // Brent crude continuous futures
+};
+
+// Yahoo Finance symbols (fallback; only source carrying the JSE indices).
 const YAHOO_SYMBOLS = {
-  // indices (by our internal symbol)
   JALSH: '^J203.JO',
   JTOPI: '^J200.JO',
   SPX: '^GSPC',
   IXIC: '^IXIC',
   UKX: '^FTSE',
-  // commodities
   XAU: 'GC=F',
   XPT: 'PL=F',
   XPD: 'PA=F',
@@ -66,6 +79,56 @@ async function fetchYahooQuote(symbol) {
     throw new Error(`No usable price for ${symbol}`);
   }
   return { price, previousClose };
+}
+
+/**
+ * Returns { price, previousClose } from Stooq's daily-history CSV
+ * (last ~14 calendar days; the final two closes give price + change).
+ */
+async function fetchStooqQuote(symbol) {
+  const fmt = (d) => d.toISOString().slice(0, 10).replaceAll('-', '');
+  const now = new Date();
+  const start = new Date(now.getTime() - 14 * 24 * 3600 * 1000);
+  const url = `https://stooq.com/q/d/l/?s=${encodeURIComponent(symbol)}&i=d&d1=${fmt(start)}&d2=${fmt(now)}`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': USER_AGENT },
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  const csv = (await res.text()).trim();
+  // Format: Date,Open,High,Low,Close[,Volume] with a header row.
+  const rows = csv.split('\n').slice(1);
+  const closes = rows
+    .map((line) => Number.parseFloat(line.split(',')[4]))
+    .filter((v) => Number.isFinite(v) && v > 0);
+  if (closes.length === 0) {
+    throw new Error(`No usable data from Stooq for ${symbol} (got: ${csv.slice(0, 60)})`);
+  }
+  const price = closes[closes.length - 1];
+  const previousClose = closes.length > 1 ? closes[closes.length - 2] : price;
+  return { price, previousClose };
+}
+
+/** Tries Stooq first (reachable from CI), then falls back to Yahoo. */
+async function fetchQuote(internalSymbol) {
+  const errors = [];
+  const stooqSymbol = STOOQ_SYMBOLS[internalSymbol];
+  if (stooqSymbol) {
+    try {
+      return { ...(await fetchStooqQuote(stooqSymbol)), via: `stooq:${stooqSymbol}` };
+    } catch (err) {
+      errors.push(err.message);
+    }
+  }
+  const yahooSymbol = YAHOO_SYMBOLS[internalSymbol];
+  if (yahooSymbol) {
+    try {
+      return { ...(await fetchYahooQuote(yahooSymbol)), via: `yahoo:${yahooSymbol}` };
+    } catch (err) {
+      errors.push(err.message);
+    }
+  }
+  throw new Error(errors.join(' | ') || `no source for ${internalSymbol}`);
 }
 
 /** Returns ZAR per USD, EUR and GBP. */
@@ -163,18 +226,17 @@ async function main() {
     ...snapshot.commodities.map((item) => ({ item, kind: 'commodity' })),
   ];
   for (const { item, kind } of quoteTargets) {
-    const yahooSymbol = YAHOO_SYMBOLS[item.symbol];
-    if (!yahooSymbol) continue;
+    if (!STOOQ_SYMBOLS[item.symbol] && !YAHOO_SYMBOLS[item.symbol]) continue;
     try {
-      const { price, previousClose } = await fetchYahooQuote(yahooSymbol);
+      const { price, previousClose, via } = await fetchQuote(item.symbol);
       const field = kind === 'index' ? 'value' : 'price';
       item[field] = round(price, 2);
       Object.assign(item, withChange(price, previousClose));
       succeeded++;
-      log('ok', item.symbol, `${yahooSymbol} = ${round(price, 2)}`);
+      log('ok', item.symbol, `${via} = ${round(price, 2)}`);
     } catch (err) {
       failed++;
-      log('FAIL', item.symbol, `${yahooSymbol}: ${err.message} (keeping previous value)`);
+      log('FAIL', item.symbol, `${err.message} (keeping previous value)`);
     }
   }
 

@@ -10,7 +10,9 @@ on:
   # TEMPORARY: end-to-end test trigger, remove after verification.
   push:
     branches: ['claude/nice-hamilton-3n8ro2']
-    paths: ['.github/workflows/refresh-market-data.yml']
+    paths:
+      - '.github/workflows/refresh-market-data.yml'
+      - 'scripts/refresh-market-data.mjs'
 
 permissions:
   contents: write
