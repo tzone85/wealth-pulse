@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-10T15:34:08.955Z",
+  "updatedAt": "2026-06-10T15:37:32.539Z",
   "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
@@ -21,9 +21,9 @@
     {
       "name": "S&P 500",
       "symbol": "SPX",
-      "value": 7501.24,
-      "change": 56.99,
-      "changePercent": 0.77,
+      "value": 7328.52,
+      "change": -225.16,
+      "changePercent": -2.98,
       "currency": "USD"
     },
     {
