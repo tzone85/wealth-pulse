@@ -82,53 +82,41 @@ async function fetchYahooQuote(symbol) {
 }
 
 /**
- * Returns { price, previousClose } from Stooq's daily-history CSV
- * (last ~14 calendar days; the final two closes give price + change).
+ * Fetches all Stooq symbols in ONE request via the current-quote CSV
+ * endpoint (/q/l/). Returns a map of stooq symbol (lowercase) → close.
+ * Tries stooq.com then the stooq.pl mirror.
  */
-async function fetchStooqQuote(symbol) {
-  const fmt = (d) => d.toISOString().slice(0, 10).replaceAll('-', '');
-  const now = new Date();
-  const start = new Date(now.getTime() - 14 * 24 * 3600 * 1000);
-  const url = `https://stooq.com/q/d/l/?s=${encodeURIComponent(symbol)}&i=d&d1=${fmt(start)}&d2=${fmt(now)}`;
-  const res = await fetch(url, {
-    headers: { 'User-Agent': USER_AGENT },
-    signal: AbortSignal.timeout(15_000),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  const csv = (await res.text()).trim();
-  // Format: Date,Open,High,Low,Close[,Volume] with a header row.
-  const rows = csv.split('\n').slice(1);
-  const closes = rows
-    .map((line) => Number.parseFloat(line.split(',')[4]))
-    .filter((v) => Number.isFinite(v) && v > 0);
-  if (closes.length === 0) {
-    throw new Error(`No usable data from Stooq for ${symbol} (got: ${csv.slice(0, 60)})`);
-  }
-  const price = closes[closes.length - 1];
-  const previousClose = closes.length > 1 ? closes[closes.length - 2] : price;
-  return { price, previousClose };
-}
-
-/** Tries Stooq first (reachable from CI), then falls back to Yahoo. */
-async function fetchQuote(internalSymbol) {
-  const errors = [];
-  const stooqSymbol = STOOQ_SYMBOLS[internalSymbol];
-  if (stooqSymbol) {
+async function fetchStooqBatch(symbols) {
+  const query = symbols.join(',');
+  let lastError;
+  for (const host of ['stooq.com', 'stooq.pl']) {
     try {
-      return { ...(await fetchStooqQuote(stooqSymbol)), via: `stooq:${stooqSymbol}` };
+      const url = `https://${host}/q/l/?s=${encodeURIComponent(query)}&f=sd2t2ohlcv&h&e=csv`;
+      const res = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'text/csv,text/plain,*/*' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} from ${host}`);
+      const text = (await res.text()).trim();
+      // Format: Symbol,Date,Time,Open,High,Low,Close,Volume with header row.
+      const quotes = {};
+      for (const line of text.split('\n').slice(1)) {
+        const cols = line.split(',');
+        const symbol = cols[0]?.trim().toLowerCase();
+        const close = Number.parseFloat(cols[6]);
+        if (symbol && Number.isFinite(close) && close > 0) {
+          quotes[symbol] = close;
+        }
+      }
+      if (Object.keys(quotes).length === 0) {
+        throw new Error(`no parsable rows from ${host} (got: ${text.slice(0, 80)})`);
+      }
+      return quotes;
     } catch (err) {
-      errors.push(err.message);
+      lastError = err;
     }
   }
-  const yahooSymbol = YAHOO_SYMBOLS[internalSymbol];
-  if (yahooSymbol) {
-    try {
-      return { ...(await fetchYahooQuote(yahooSymbol)), via: `yahoo:${yahooSymbol}` };
-    } catch (err) {
-      errors.push(err.message);
-    }
-  }
-  throw new Error(errors.join(' | ') || `no source for ${internalSymbol}`);
+  throw lastError;
 }
 
 /** Returns ZAR per USD, EUR and GBP. */
@@ -220,23 +208,45 @@ async function main() {
     log('FAIL', 'FX', err.message);
   }
 
-  // --- Indices & commodities via Yahoo ---
+  // --- Indices & commodities: Stooq batch first, Yahoo per-symbol fallback ---
   const quoteTargets = [
     ...snapshot.indices.map((item) => ({ item, kind: 'index' })),
     ...snapshot.commodities.map((item) => ({ item, kind: 'commodity' })),
   ];
+
+  let stooqQuotes = {};
+  try {
+    stooqQuotes = await fetchStooqBatch(Object.values(STOOQ_SYMBOLS));
+  } catch (err) {
+    log('FAIL', 'stooq', `batch fetch failed: ${err.message}`);
+  }
+
   for (const { item, kind } of quoteTargets) {
     if (!STOOQ_SYMBOLS[item.symbol] && !YAHOO_SYMBOLS[item.symbol]) continue;
+    const field = kind === 'index' ? 'value' : 'price';
+    const stooqSymbol = STOOQ_SYMBOLS[item.symbol]?.toLowerCase();
+    const stooqPrice = stooqSymbol ? stooqQuotes[stooqSymbol] : undefined;
+
+    if (Number.isFinite(stooqPrice)) {
+      // Change is day-over-day vs the previous snapshot value (same
+      // semantics as FX — the cron runs at least daily on weekdays).
+      Object.assign(item, withChange(stooqPrice, item[field]));
+      item[field] = round(stooqPrice, 2);
+      succeeded++;
+      log('ok', item.symbol, `stooq:${stooqSymbol} = ${round(stooqPrice, 2)}`);
+      continue;
+    }
+
+    const yahooSymbol = YAHOO_SYMBOLS[item.symbol];
     try {
-      const { price, previousClose, via } = await fetchQuote(item.symbol);
-      const field = kind === 'index' ? 'value' : 'price';
+      const { price, previousClose } = await fetchYahooQuote(yahooSymbol);
       item[field] = round(price, 2);
       Object.assign(item, withChange(price, previousClose));
       succeeded++;
-      log('ok', item.symbol, `${via} = ${round(price, 2)}`);
+      log('ok', item.symbol, `yahoo:${yahooSymbol} = ${round(price, 2)}`);
     } catch (err) {
       failed++;
-      log('FAIL', item.symbol, `${err.message} (keeping previous value)`);
+      log('FAIL', item.symbol, `${yahooSymbol}: ${err.message} (keeping previous value)`);
     }
   }
 
