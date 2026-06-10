@@ -20,7 +20,19 @@ import { fileURLToPath } from 'node:url';
 
 const SNAPSHOT_PATH = fileURLToPath(new URL('../src/data/market-snapshot.json', import.meta.url));
 
-// Stooq symbols (primary source; daily-history CSV endpoint).
+// CNBC symbols (primary source — keyless, one batched request, and not
+// blocked from CI runner IPs, unlike Yahoo/Stooq; verified in testing).
+const CNBC_SYMBOLS = {
+  SPX: '.SPX', // S&P 500
+  IXIC: '.IXIC', // NASDAQ Composite
+  UKX: '.FTSE', // FTSE 100
+  XAU: '@GC.1', // gold front-month futures
+  XPT: '@PL.1', // platinum futures
+  XPD: '@PA.1', // palladium futures
+  BRN: '@LCO.1', // Brent crude futures
+};
+
+// Stooq symbols (secondary; works from residential IPs / local runs).
 const STOOQ_SYMBOLS = {
   SPX: '^spx', // S&P 500
   IXIC: '^ndq', // NASDAQ Composite
@@ -154,6 +166,35 @@ async function fetchStooqBatch(symbols) {
   throw lastError;
 }
 
+/**
+ * Fetches all CNBC symbols in ONE request. Returns a map of CNBC symbol
+ * → { price, previousClose }. CNBC formats numbers with commas.
+ */
+async function fetchCnbcBatch(symbols) {
+  const url =
+    'https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol' +
+    `?symbols=${encodeURIComponent(symbols.join('|'))}` +
+    '&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json';
+  const data = await fetchJson(url, { retries: 2 });
+  const raw = data?.FormattedQuoteResult?.FormattedQuote;
+  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  const num = (v) => Number.parseFloat(String(v ?? '').replaceAll(',', ''));
+  const quotes = {};
+  for (const q of list) {
+    const price = num(q.last);
+    if (!q.symbol || !Number.isFinite(price) || price <= 0) continue;
+    const prev = num(q.previous_day_closing);
+    quotes[q.symbol] = {
+      price,
+      previousClose: Number.isFinite(prev) && prev > 0 ? prev : price,
+    };
+  }
+  if (Object.keys(quotes).length === 0) {
+    throw new Error('no parsable quotes from CNBC');
+  }
+  return quotes;
+}
+
 /** Returns ZAR per USD, EUR and GBP. */
 async function fetchFxRates() {
   const data = await fetchJson('https://open.er-api.com/v6/latest/USD');
@@ -243,25 +284,48 @@ async function main() {
     log('FAIL', 'FX', err.message);
   }
 
-  // --- Indices & commodities: Stooq batch first, Yahoo per-symbol fallback ---
+  // --- Indices & commodities: CNBC batch → Stooq batch → Yahoo per symbol ---
   const quoteTargets = [
     ...snapshot.indices.map((item) => ({ item, kind: 'index' })),
     ...snapshot.commodities.map((item) => ({ item, kind: 'commodity' })),
   ];
 
-  let stooqQuotes = {};
+  let cnbcQuotes = {};
   try {
-    stooqQuotes = await fetchStooqBatch(Object.values(STOOQ_SYMBOLS));
+    cnbcQuotes = await fetchCnbcBatch(Object.values(CNBC_SYMBOLS));
   } catch (err) {
-    log('FAIL', 'stooq', `batch fetch failed: ${err.message}`);
+    log('FAIL', 'cnbc', `batch fetch failed: ${err.message}`);
+  }
+
+  let stooqQuotes = {};
+  const missingFromCnbc = Object.entries(CNBC_SYMBOLS).some(
+    ([internal, cnbc]) => !cnbcQuotes[cnbc] && STOOQ_SYMBOLS[internal],
+  );
+  if (missingFromCnbc) {
+    try {
+      stooqQuotes = await fetchStooqBatch(Object.values(STOOQ_SYMBOLS));
+    } catch (err) {
+      log('FAIL', 'stooq', `batch fetch failed: ${err.message}`);
+    }
   }
 
   for (const { item, kind } of quoteTargets) {
-    if (!STOOQ_SYMBOLS[item.symbol] && !YAHOO_SYMBOLS[item.symbol]) continue;
+    if (!CNBC_SYMBOLS[item.symbol] && !STOOQ_SYMBOLS[item.symbol] && !YAHOO_SYMBOLS[item.symbol]) {
+      continue;
+    }
     const field = kind === 'index' ? 'value' : 'price';
+
+    const cnbcQuote = cnbcQuotes[CNBC_SYMBOLS[item.symbol]];
+    if (cnbcQuote) {
+      item[field] = round(cnbcQuote.price, 2);
+      Object.assign(item, withChange(cnbcQuote.price, cnbcQuote.previousClose));
+      succeeded++;
+      log('ok', item.symbol, `cnbc:${CNBC_SYMBOLS[item.symbol]} = ${round(cnbcQuote.price, 2)}`);
+      continue;
+    }
+
     const stooqSymbol = STOOQ_SYMBOLS[item.symbol]?.toLowerCase();
     const stooqPrice = stooqSymbol ? stooqQuotes[stooqSymbol] : undefined;
-
     if (Number.isFinite(stooqPrice)) {
       // Change is day-over-day vs the previous snapshot value (same
       // semantics as FX — the cron runs at least daily on weekdays).
@@ -272,6 +336,8 @@ async function main() {
       continue;
     }
 
+    // Space out Yahoo requests — rapid-fire is what triggers the 429s.
+    await sleep(5_000);
     const yahooSymbol = YAHOO_SYMBOLS[item.symbol];
     try {
       const { price, previousClose } = await fetchYahooQuote(yahooSymbol);
@@ -283,8 +349,6 @@ async function main() {
       failed++;
       log('FAIL', item.symbol, `${yahooSymbol}: ${err.message} (keeping previous value)`);
     }
-    // Space out Yahoo requests — rapid-fire is what triggers the 429s.
-    await sleep(5_000);
   }
 
   // History series driven by Yahoo values that may have just updated.
