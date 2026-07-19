@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import { AnalyticsProvider } from "./components/Analytics";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <main className="pt-20 pb-24 md:pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {children}
         </main>
+        <AnalyticsProvider />
       </body>
     </html>
   );
