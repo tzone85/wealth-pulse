@@ -10,6 +10,8 @@ on:
 
 permissions:
   contents: write
+  # Needed to dispatch the Pages redeploy after a data commit.
+  actions: write
 
 concurrency:
   group: refresh-market-data
@@ -33,13 +35,24 @@ jobs:
         run: node scripts/refresh-market-data.mjs
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/market-snapshot.json
           if git diff --staged --quiet; then
             echo "No changes — snapshot already up to date."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore: refresh market data snapshots"
             git push
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Trigger site redeploy
+        # Pushes made with GITHUB_TOKEN don't fire push-triggered workflows
+        # (recursion prevention), so dispatch the Pages deploy explicitly.
+        if: steps.commit.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
+        run: gh workflow run deploy-pages.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
