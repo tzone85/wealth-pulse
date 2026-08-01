@@ -3,78 +3,47 @@ import type {
   CurrencyPair,
   Commodity,
   HistoricalPoint,
+  MarketSnapshot,
   CompoundResult,
   PhaseInfo,
   OpportunityPlatform,
 } from '@/types/market';
+import snapshotJson from '@/data/market-snapshot.json';
 
-// Static market data — structured for easy API replacement later
-// Data reflects current late-June 2026 market conditions
+// Market data is read from a JSON snapshot that is refreshed automatically
+// by .github/workflows/refresh-market-data.yml (see docs/Market-Data-Pipeline.md).
+const snapshot = snapshotJson as MarketSnapshot;
+
+export function getSnapshotUpdatedAt(): string {
+  return snapshot.updatedAt;
+}
 
 export function getMarketIndices(): MarketIndex[] {
-  return [
-    { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' },
-    { name: 'JSE Top 40', symbol: 'JTOPI', value: 104422.19, change: 163.46, changePercent: 0.16, currency: 'ZAR' },
-    { name: 'S&P 500', symbol: 'SPX', value: 7358.22, change: -7.24, changePercent: -0.1, currency: 'USD' },
-    { name: 'NASDAQ', symbol: 'IXIC', value: 25431.66, change: -155.38, changePercent: -0.61, currency: 'USD' },
-    { name: 'FTSE 100', symbol: 'UKX', value: 8320, change: -28, changePercent: -0.34, currency: 'GBP' },
-  ];
+  return snapshot.indices;
 }
 
 export function getCurrencyPairs(): CurrencyPair[] {
-  return [
-    { pair: 'ZAR/USD', rate: 0.06085, change: -0.0001, changePercent: -0.17 },
-    { pair: 'ZAR/EUR', rate: 20.18, change: -0.08, changePercent: -0.40 },
-    { pair: 'ZAR/GBP', rate: 23.45, change: 0.12, changePercent: 0.51 },
-  ];
+  return snapshot.currencies;
 }
 
 export function getCommodities(): Commodity[] {
-  return [
-    { name: 'Gold', symbol: 'XAU', price: 4031.41, change: 14.75, changePercent: 0.37, unit: '$/oz' },
-    { name: 'Platinum', symbol: 'XPT', price: 1760.09, change: 19.75, changePercent: 1.13, unit: '$/oz' },
-    { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Keeping Palladium as is, no search result
-    { name: 'Brent Crude', symbol: 'BRN', price: 73.4, change: -0.47, changePercent: -0.64, unit: '$/bbl' },
-  ];
+  return snapshot.commodities;
 }
 
 export function getZARHistory(): HistoricalPoint[] {
-  // USD/ZAR over the last 12 months
-  return [
-    { date: '2025-05', value: 18.20 },
-    { date: '2025-06', value: 18.45 },
-    { date: '2025-07', value: 17.95 },
-    { date: '2025-08', value: 18.60 },
-    { date: '2025-09', value: 18.80 },
-    { date: '2025-10', value: 19.10 },
-    { date: '2025-11', value: 18.70 },
-    { date: '2025-12', value: 18.35 },
-    { date: '2026-01', value: 18.90 },
-    { date: '2026-02', value: 18.55 },
-    { date: '2026-03', value: 18.40 },
-    { date: '2026-04', value: 16.8975 },
-    { date: '2026-05', value: 16.0436 },
-    { date: '2026-06', value: 16.4335 },
-  ];
+  return snapshot.history.usdZar;
 }
 
 export function getJSEHistory(): HistoricalPoint[] {
-  return [
-    { date: '2025-05', value: 74200 },
-    { date: '2025-06', value: 73800 },
-    { date: '2025-07', value: 75100 },
-    { date: '2025-08', value: 74600 },
-    { date: '2025-09', value: 76200 },
-    { date: '2025-10', value: 75400 },
-    { date: '2025-11', value: 74900 },
-    { date: '2025-12', value: 75800 },
-    { date: '2026-01', value: 76100 },
-    { date: '2026-02', value: 75300 },
-    { date: '2026-03', value: 76800 },
-    { date: '2026-04', value: 93697.2 },
-    { date: '2026-05', value: 109063.5 },
-    { date: '2026-06', value: 104422.19 },
-  ];
+  return snapshot.history.jseTop40;
+}
+
+export function getGoldHistory(): HistoricalPoint[] {
+  return snapshot.history.gold;
+}
+
+export function getPlatinumHistory(): HistoricalPoint[] {
+  return snapshot.history.platinum;
 }
 
 export function calculateCompoundGrowth(

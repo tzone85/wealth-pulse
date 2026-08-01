@@ -3,7 +3,7 @@
 import MetricCard from '@/components/MetricCard';
 import GrowthChart from '@/components/GrowthChart';
 import MarketChart from '@/components/MarketChart';
-import { getMarketIndices, getCurrencyPairs, getCommodities, getZARHistory, getJSEHistory } from '@/lib/market-data';
+import { getMarketIndices, getCurrencyPairs, getCommodities, getZARHistory, getJSEHistory, getSnapshotUpdatedAt } from '@/lib/market-data';
 import { formatNumber } from '@/lib/utils';
 import { TrendingUp, DollarSign, Gem, BarChart3 } from 'lucide-react';
 
@@ -14,13 +14,19 @@ export default function Dashboard() {
   const zarHistory = getZARHistory();
   const jseHistory = getJSEHistory();
 
-  const zarUsd = currencies.find(c => c.pair === 'ZAR/USD');
+  const usdZar = currencies.find(c => c.pair === 'USD/ZAR');
+  const jseTop40 = indices.find(i => i.symbol === 'JTOPI');
+  const gold = commodities.find(c => c.symbol === 'XAU');
+  const platinum = commodities.find(c => c.symbol === 'XPT');
+  const updatedAt = new Date(getSnapshotUpdatedAt()).toLocaleDateString('en-ZA', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-zinc-400 mt-1">Your financial command centre. Updated April 2026.</p>
+        <p className="text-zinc-400 mt-1">Your financial command centre. Data updated {updatedAt}.</p>
       </div>
 
       {/* Portfolio Overview */}
@@ -57,34 +63,34 @@ export default function Dashboard() {
       {/* Quick Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          title="ZAR / USD"
-          value={`R${zarUsd?.rate.toFixed(2)}`}
-          change={zarUsd?.change}
-          changePercent={zarUsd?.changePercent}
+          title="USD / ZAR"
+          value={`R${usdZar?.rate.toFixed(2)}`}
+          change={usdZar?.change}
+          changePercent={usdZar?.changePercent}
           icon={<DollarSign className="w-6 h-6" />}
           subtitle="Weaker ZAR boosts resource stocks"
         />
         <MetricCard
           title="Gold"
-          value={`$${formatNumber(commodities[0].price, 0)}/oz`}
-          change={commodities[0].change}
-          changePercent={commodities[0].changePercent}
+          value={gold ? `$${formatNumber(gold.price, 0)}/oz` : '—'}
+          change={gold?.change}
+          changePercent={gold?.changePercent}
           icon={<Gem className="w-6 h-6" />}
           subtitle="SA is a major producer"
         />
         <MetricCard
           title="JSE Top 40"
-          value={formatNumber(indices[1].value, 0)}
-          change={indices[1].change}
-          changePercent={indices[1].changePercent}
+          value={jseTop40 ? formatNumber(jseTop40.value, 0) : '—'}
+          change={jseTop40?.change}
+          changePercent={jseTop40?.changePercent}
           icon={<BarChart3 className="w-6 h-6" />}
           subtitle="Broad SA market"
         />
         <MetricCard
           title="Platinum"
-          value={`$${formatNumber(commodities[1].price, 0)}/oz`}
-          change={commodities[1].change}
-          changePercent={commodities[1].changePercent}
+          value={platinum ? `$${formatNumber(platinum.price, 0)}/oz` : '—'}
+          change={platinum?.change}
+          changePercent={platinum?.changePercent}
           icon={<Gem className="w-6 h-6" />}
           subtitle="SA produces 70% of world supply"
         />
@@ -92,7 +98,7 @@ export default function Dashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <MarketChart data={zarHistory} title="ZAR/USD (12 months)" color="#60a5fa" prefix="R" />
+        <MarketChart data={zarHistory} title="USD/ZAR (12 months)" color="#60a5fa" prefix="R" />
         <MarketChart data={jseHistory} title="JSE Top 40 (12 months)" color="#34d399" />
       </div>
 
