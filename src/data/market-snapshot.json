@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-01T17:55:38.240Z",
+  "updatedAt": "2026-08-01T18:11:37.558Z",
   "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
@@ -47,20 +47,20 @@
     {
       "pair": "USD/ZAR",
       "rate": 16.5395,
-      "change": 0.106,
-      "changePercent": 0.64
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "EUR/ZAR",
       "rate": 19.0394,
-      "change": -0.0215,
-      "changePercent": -0.11
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "GBP/ZAR",
       "rate": 22.2515,
-      "change": 0.1688,
-      "changePercent": 0.76
+      "change": 0,
+      "changePercent": 0
     }
   ],
   "commodities": [
