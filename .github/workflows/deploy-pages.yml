@@ -42,6 +42,12 @@ jobs:
           cd out
           # Without .nojekyll, Pages' Jekyll pipeline drops the _next/ dir.
           touch .nojekyll
+          # Vercel is subscribed to this repo and reads git.deploymentEnabled
+          # from the branch being deployed. gh-pages carries static export with
+          # no Next app/ dir, so a Vercel build here always fails. Ship a
+          # vercel.json on gh-pages that disables Vercel deploys for it — Pages
+          # ignores this file, Vercel skips the branch.
+          printf '{"git":{"deploymentEnabled":{"gh-pages":false}}}\n' > vercel.json
           git init -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
