@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T09:56:06.171Z",
+  "updatedAt": "2026-10-15T19:09:55.391Z",
   "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
@@ -21,25 +21,25 @@
     {
       "name": "S&P 500",
       "symbol": "SPX",
-      "value": 7718.94,
-      "change": 0,
-      "changePercent": 0,
+      "value": 7738.35,
+      "change": 19.41,
+      "changePercent": 0.25,
       "currency": "USD"
     },
     {
       "name": "NASDAQ",
       "symbol": "IXIC",
-      "value": 26692.87,
-      "change": 0,
-      "changePercent": 0,
+      "value": 26671.92,
+      "change": -20.952,
+      "changePercent": -0.08,
       "currency": "USD"
     },
     {
       "name": "FTSE 100",
       "symbol": "UKX",
-      "value": 10784.9,
-      "change": 60.04,
-      "changePercent": 0.56,
+      "value": 10840.35,
+      "change": 115.49,
+      "changePercent": 1.08,
       "currency": "GBP"
     }
   ],
@@ -47,53 +47,53 @@
     {
       "pair": "USD/ZAR",
       "rate": 16.5797,
-      "change": 0.0915,
-      "changePercent": 0.56
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "EUR/ZAR",
       "rate": 18.5368,
-      "change": 0.0816,
-      "changePercent": 0.44
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "GBP/ZAR",
       "rate": 21.9261,
-      "change": 0.0793,
-      "changePercent": 0.36
+      "change": 0,
+      "changePercent": 0
     }
   ],
   "commodities": [
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 4179.5,
-      "change": 71.6,
+      "price": 4179.4,
+      "change": 71.5,
       "changePercent": 1.74,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1626.5,
-      "change": 11.9,
-      "changePercent": 0.74,
+      "price": 1630.2,
+      "change": 15.6,
+      "changePercent": 0.97,
       "unit": "$/oz"
     },
     {
       "name": "Palladium",
       "symbol": "XPD",
-      "price": 1129,
-      "change": 32.5,
-      "changePercent": 2.96,
+      "price": 1133,
+      "change": 36.5,
+      "changePercent": 3.33,
       "unit": "$/oz"
     },
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 104.07,
-      "change": -1.99,
-      "changePercent": -1.88,
+      "price": 105.89,
+      "change": -0.17,
+      "changePercent": -0.16,
       "unit": "$/bbl"
     }
   ],
@@ -257,7 +257,7 @@
       },
       {
         "date": "2026-10",
-        "value": 4179.5
+        "value": 4179.4
       }
     ],
     "platinum": [
@@ -311,7 +311,7 @@
       },
       {
         "date": "2026-10",
-        "value": 1626.5
+        "value": 1630.2
       }
     ]
   }
