@@ -9,44 +9,38 @@ import type {
 } from '@/types/market';
 
 // Static market data — structured for easy API replacement later
-// Data reflects current late-June 2026 market conditions
+// Data reflects current mid-October 2026 market conditions (as at 22–23 Oct 2026)
 
 export function getMarketIndices(): MarketIndex[] {
   return [
-    { name: 'JSE All Share', symbol: 'JALSH', value: 82450, change: 345, changePercent: 0.42, currency: 'ZAR' },
-    { name: 'JSE Top 40', symbol: 'JTOPI', value: 104422.19, change: 163.46, changePercent: 0.16, currency: 'ZAR' },
-    { name: 'S&P 500', symbol: 'SPX', value: 7358.22, change: -7.24, changePercent: -0.1, currency: 'USD' },
-    { name: 'NASDAQ', symbol: 'IXIC', value: 25431.66, change: -155.38, changePercent: -0.61, currency: 'USD' },
-    { name: 'FTSE 100', symbol: 'UKX', value: 8320, change: -28, changePercent: -0.34, currency: 'GBP' },
+    { name: 'JSE All Share', symbol: 'JALSH', value: 108525.49, change: -1129.81, changePercent: -1.03, currency: 'ZAR' },
+    { name: 'JSE Top 40', symbol: 'JTOPI', value: 100543.39, change: -1195.91, changePercent: -1.18, currency: 'ZAR' },
+    { name: 'S&P 500', symbol: 'SPX', value: 7663.43, change: -93.74, changePercent: -1.21, currency: 'USD' },
+    { name: 'NASDAQ', symbol: 'IXIC', value: 26008.86, change: -694.00, changePercent: -2.60, currency: 'USD' },
+    { name: 'FTSE 100', symbol: 'UKX', value: 10725.03, change: -27.85, changePercent: -0.26, currency: 'GBP' },
   ];
 }
 
 export function getCurrencyPairs(): CurrencyPair[] {
   return [
-    { pair: 'ZAR/USD', rate: 0.06085, change: -0.0001, changePercent: -0.17 },
-    { pair: 'ZAR/EUR', rate: 20.18, change: -0.08, changePercent: -0.40 },
-    { pair: 'ZAR/GBP', rate: 23.45, change: 0.12, changePercent: 0.51 },
+    { pair: 'ZAR/USD', rate: 0.06063, change: -0.00005, changePercent: -0.08 },
+    { pair: 'ZAR/EUR', rate: 18.50, change: 0.15, changePercent: 0.82 },
+    { pair: 'ZAR/GBP', rate: 22.09, change: 0.21, changePercent: 0.96 },
   ];
 }
 
 export function getCommodities(): Commodity[] {
   return [
-    { name: 'Gold', symbol: 'XAU', price: 4031.41, change: 14.75, changePercent: 0.37, unit: '$/oz' },
-    { name: 'Platinum', symbol: 'XPT', price: 1760.09, change: 19.75, changePercent: 1.13, unit: '$/oz' },
-    { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Keeping Palladium as is, no search result
-    { name: 'Brent Crude', symbol: 'BRN', price: 73.4, change: -0.47, changePercent: -0.64, unit: '$/bbl' },
+    { name: 'Gold', symbol: 'XAU', price: 4017.50, change: -5.80, changePercent: -0.14, unit: '$/oz' },
+    { name: 'Platinum', symbol: 'XPT', price: 1576.00, change: -57.00, changePercent: -3.49, unit: '$/oz' },
+    { name: 'Palladium', symbol: 'XPD', price: 1015, change: 5.8, changePercent: 0.57, unit: '$/oz' }, // Not refreshed — no current quote sourced
+    { name: 'Brent Crude', symbol: 'BRN', price: 112.96, change: 4.17, changePercent: 3.84, unit: '$/bbl' },
   ];
 }
 
 export function getZARHistory(): HistoricalPoint[] {
-  // USD/ZAR over the last 12 months
+  // USD/ZAR month-end rates — rolling 12-month window (source: CurrencyNews / x-rates.com)
   return [
-    { date: '2025-05', value: 18.20 },
-    { date: '2025-06', value: 18.45 },
-    { date: '2025-07', value: 17.95 },
-    { date: '2025-08', value: 18.60 },
-    { date: '2025-09', value: 18.80 },
-    { date: '2025-10', value: 19.10 },
     { date: '2025-11', value: 18.70 },
     { date: '2025-12', value: 18.35 },
     { date: '2026-01', value: 18.90 },
@@ -55,17 +49,16 @@ export function getZARHistory(): HistoricalPoint[] {
     { date: '2026-04', value: 16.8975 },
     { date: '2026-05', value: 16.0436 },
     { date: '2026-06', value: 16.4335 },
+    { date: '2026-07', value: 16.5450 },
+    { date: '2026-08', value: 16.1069 },
+    { date: '2026-09', value: 16.4232 },
+    { date: '2026-10', value: 16.4895 },
   ];
 }
 
 export function getJSEHistory(): HistoricalPoint[] {
+  // JSE Top 40 (JTOPI) month-end levels — rolling 12-month window
   return [
-    { date: '2025-05', value: 74200 },
-    { date: '2025-06', value: 73800 },
-    { date: '2025-07', value: 75100 },
-    { date: '2025-08', value: 74600 },
-    { date: '2025-09', value: 76200 },
-    { date: '2025-10', value: 75400 },
     { date: '2025-11', value: 74900 },
     { date: '2025-12', value: 75800 },
     { date: '2026-01', value: 76100 },
@@ -74,6 +67,10 @@ export function getJSEHistory(): HistoricalPoint[] {
     { date: '2026-04', value: 93697.2 },
     { date: '2026-05', value: 109063.5 },
     { date: '2026-06', value: 104422.19 },
+    { date: '2026-07', value: 103264.10 },  // est. from Skybound Capital Aug return
+    { date: '2026-08', value: 108760.50 },  // Skybound Capital, 31 Aug 2026
+    { date: '2026-09', value: 100790.00 },  // approx. from market context
+    { date: '2026-10', value: 100543.39 },  // Stooq/TradeIntel, 22 Oct 2026
   ];
 }
 
