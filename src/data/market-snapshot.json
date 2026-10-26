@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-26T06:00:00.000Z",
-  "source": "Investing.com + Kitco + StatMuse + EBNewsDaily + Economic Times",
+  "updatedAt": "2026-10-26T11:06:56.935Z",
+  "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
       "name": "JSE All Share",
@@ -22,141 +22,297 @@
       "name": "S&P 500",
       "symbol": "SPX",
       "value": 7623.68,
-      "change": -39.75,
-      "changePercent": -0.52,
+      "change": 0,
+      "changePercent": 0,
       "currency": "USD"
     },
     {
       "name": "NASDAQ",
       "symbol": "IXIC",
       "value": 25955.34,
-      "change": -53.52,
-      "changePercent": -0.21,
+      "change": 0,
+      "changePercent": 0,
       "currency": "USD"
     },
     {
       "name": "FTSE 100",
       "symbol": "UKX",
-      "value": 10657.71,
-      "change": -67.32,
-      "changePercent": -0.63,
+      "value": 10735.65,
+      "change": 45.29,
+      "changePercent": 0.42,
       "currency": "GBP"
     }
   ],
   "currencies": [
     {
       "pair": "USD/ZAR",
-      "rate": 16.6193,
-      "change": 0.0389,
-      "changePercent": 0.23
+      "rate": 16.5988,
+      "change": -0.0205,
+      "changePercent": -0.12
     },
     {
       "pair": "EUR/ZAR",
-      "rate": 18.6057,
-      "change": 0.07,
-      "changePercent": 0.38
+      "rate": 18.6058,
+      "change": 0.0001,
+      "changePercent": 0
     },
     {
       "pair": "GBP/ZAR",
-      "rate": 22.1976,
-      "change": 0.06,
-      "changePercent": 0.27
+      "rate": 22.1973,
+      "change": -0.0003,
+      "changePercent": 0
     }
   ],
   "commodities": [
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 4010.5,
-      "change": 15.6,
-      "changePercent": 0.39,
+      "price": 4026.3,
+      "change": 18.4,
+      "changePercent": 0.46,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1543.0,
-      "change": -5.0,
-      "changePercent": -0.32,
+      "price": 1542.9,
+      "change": -19.5,
+      "changePercent": -1.25,
       "unit": "$/oz"
     },
     {
       "name": "Palladium",
       "symbol": "XPD",
-      "price": 1049.5,
-      "change": -7.1,
-      "changePercent": -0.67,
+      "price": 1043,
+      "change": -8.5,
+      "changePercent": -0.81,
       "unit": "$/oz"
     },
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 115.0,
-      "change": -1.5,
-      "changePercent": -1.29,
+      "price": 114.94,
+      "change": -1.78,
+      "changePercent": -1.53,
       "unit": "$/bbl"
     }
   ],
   "history": {
     "usdZar": [
-      { "date": "2025-09", "value": 18.8 },
-      { "date": "2025-10", "value": 19.1 },
-      { "date": "2025-11", "value": 18.7 },
-      { "date": "2025-12", "value": 18.35 },
-      { "date": "2026-01", "value": 18.9 },
-      { "date": "2026-02", "value": 18.55 },
-      { "date": "2026-03", "value": 18.4 },
-      { "date": "2026-04", "value": 16.8975 },
-      { "date": "2026-05", "value": 16.0436 },
-      { "date": "2026-06", "value": 16.4335 },
-      { "date": "2026-08", "value": 16.1311 },
-      { "date": "2026-09", "value": 16.4069 },
-      { "date": "2026-10", "value": 16.6193 }
+      {
+        "date": "2025-09",
+        "value": 18.8
+      },
+      {
+        "date": "2025-10",
+        "value": 19.1
+      },
+      {
+        "date": "2025-11",
+        "value": 18.7
+      },
+      {
+        "date": "2025-12",
+        "value": 18.35
+      },
+      {
+        "date": "2026-01",
+        "value": 18.9
+      },
+      {
+        "date": "2026-02",
+        "value": 18.55
+      },
+      {
+        "date": "2026-03",
+        "value": 18.4
+      },
+      {
+        "date": "2026-04",
+        "value": 16.8975
+      },
+      {
+        "date": "2026-05",
+        "value": 16.0436
+      },
+      {
+        "date": "2026-06",
+        "value": 16.4335
+      },
+      {
+        "date": "2026-08",
+        "value": 16.1311
+      },
+      {
+        "date": "2026-09",
+        "value": 16.4069
+      },
+      {
+        "date": "2026-10",
+        "value": 16.5988
+      }
     ],
     "jseTop40": [
-      { "date": "2025-09", "value": 76200 },
-      { "date": "2025-10", "value": 75400 },
-      { "date": "2025-11", "value": 74900 },
-      { "date": "2025-12", "value": 75800 },
-      { "date": "2026-01", "value": 76100 },
-      { "date": "2026-02", "value": 75300 },
-      { "date": "2026-03", "value": 76800 },
-      { "date": "2026-04", "value": 93697.2 },
-      { "date": "2026-05", "value": 109063.5 },
-      { "date": "2026-06", "value": 104422.19 },
-      { "date": "2026-08", "value": 104422.19 },
-      { "date": "2026-09", "value": 104422.19 },
-      { "date": "2026-10", "value": 99990.91 }
+      {
+        "date": "2025-09",
+        "value": 76200
+      },
+      {
+        "date": "2025-10",
+        "value": 75400
+      },
+      {
+        "date": "2025-11",
+        "value": 74900
+      },
+      {
+        "date": "2025-12",
+        "value": 75800
+      },
+      {
+        "date": "2026-01",
+        "value": 76100
+      },
+      {
+        "date": "2026-02",
+        "value": 75300
+      },
+      {
+        "date": "2026-03",
+        "value": 76800
+      },
+      {
+        "date": "2026-04",
+        "value": 93697.2
+      },
+      {
+        "date": "2026-05",
+        "value": 109063.5
+      },
+      {
+        "date": "2026-06",
+        "value": 104422.19
+      },
+      {
+        "date": "2026-08",
+        "value": 104422.19
+      },
+      {
+        "date": "2026-09",
+        "value": 104422.19
+      },
+      {
+        "date": "2026-10",
+        "value": 99990.91
+      }
     ],
     "gold": [
-      { "date": "2025-09", "value": 2610 },
-      { "date": "2025-10", "value": 2700 },
-      { "date": "2025-11", "value": 2850 },
-      { "date": "2025-12", "value": 3050 },
-      { "date": "2026-01", "value": 3300 },
-      { "date": "2026-02", "value": 3650 },
-      { "date": "2026-03", "value": 4000 },
-      { "date": "2026-04", "value": 4651 },
-      { "date": "2026-05", "value": 4539.3 },
-      { "date": "2026-06", "value": 4031.41 },
-      { "date": "2026-08", "value": 4498.5 },
-      { "date": "2026-09", "value": 4185.4 },
-      { "date": "2026-10", "value": 4010.5 }
+      {
+        "date": "2025-09",
+        "value": 2610
+      },
+      {
+        "date": "2025-10",
+        "value": 2700
+      },
+      {
+        "date": "2025-11",
+        "value": 2850
+      },
+      {
+        "date": "2025-12",
+        "value": 3050
+      },
+      {
+        "date": "2026-01",
+        "value": 3300
+      },
+      {
+        "date": "2026-02",
+        "value": 3650
+      },
+      {
+        "date": "2026-03",
+        "value": 4000
+      },
+      {
+        "date": "2026-04",
+        "value": 4651
+      },
+      {
+        "date": "2026-05",
+        "value": 4539.3
+      },
+      {
+        "date": "2026-06",
+        "value": 4031.41
+      },
+      {
+        "date": "2026-08",
+        "value": 4498.5
+      },
+      {
+        "date": "2026-09",
+        "value": 4185.4
+      },
+      {
+        "date": "2026-10",
+        "value": 4026.3
+      }
     ],
     "platinum": [
-      { "date": "2025-09", "value": 1180 },
-      { "date": "2025-10", "value": 1260 },
-      { "date": "2025-11", "value": 1380 },
-      { "date": "2025-12", "value": 1500 },
-      { "date": "2026-01", "value": 1650 },
-      { "date": "2026-02", "value": 1800 },
-      { "date": "2026-03", "value": 1950 },
-      { "date": "2026-04", "value": 2054 },
-      { "date": "2026-05", "value": 2043 },
-      { "date": "2026-06", "value": 1760.09 },
-      { "date": "2026-08", "value": 1800.1 },
-      { "date": "2026-09", "value": 1723.6 },
-      { "date": "2026-10", "value": 1543.0 }
+      {
+        "date": "2025-09",
+        "value": 1180
+      },
+      {
+        "date": "2025-10",
+        "value": 1260
+      },
+      {
+        "date": "2025-11",
+        "value": 1380
+      },
+      {
+        "date": "2025-12",
+        "value": 1500
+      },
+      {
+        "date": "2026-01",
+        "value": 1650
+      },
+      {
+        "date": "2026-02",
+        "value": 1800
+      },
+      {
+        "date": "2026-03",
+        "value": 1950
+      },
+      {
+        "date": "2026-04",
+        "value": 2054
+      },
+      {
+        "date": "2026-05",
+        "value": 2043
+      },
+      {
+        "date": "2026-06",
+        "value": 1760.09
+      },
+      {
+        "date": "2026-08",
+        "value": 1800.1
+      },
+      {
+        "date": "2026-09",
+        "value": 1723.6
+      },
+      {
+        "date": "2026-10",
+        "value": 1542.9
+      }
     ]
   }
 }
