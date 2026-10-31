@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-30T19:59:11.310Z",
-  "source": "open.er-api.com + Yahoo Finance",
+  "updatedAt": "2026-10-31T06:00:00.000Z",
+  "source": "open.er-api.com + Yahoo Finance + Kitco + brecorder/Reuters (cron enriched)",
   "indices": [
     {
       "name": "JSE All Share",
@@ -47,20 +47,20 @@
     {
       "pair": "USD/ZAR",
       "rate": 16.6187,
-      "change": 0,
-      "changePercent": 0
+      "change": -0.0152,
+      "changePercent": -0.09
     },
     {
       "pair": "EUR/ZAR",
       "rate": 18.549,
-      "change": 0,
-      "changePercent": 0
+      "change": 0.0095,
+      "changePercent": 0.05
     },
     {
       "pair": "GBP/ZAR",
       "rate": 22.1833,
-      "change": 0,
-      "changePercent": 0
+      "change": 0.0501,
+      "changePercent": 0.23
     }
   ],
   "commodities": [
