@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-18T22:38:34.895Z",
-  "source": "open.er-api.com + Yahoo Finance",
+  "updatedAt": "2026-11-19T04:00:00.000Z",
+  "source": "Investing.com + Rateweb + CNBC",
   "indices": [
     {
       "name": "JSE All Share",
@@ -13,9 +13,9 @@
     {
       "name": "JSE Top 40",
       "symbol": "JTOPI",
-      "value": 101566.62,
-      "change": -42.4,
-      "changePercent": -0.04,
+      "value": 98732.67,
+      "change": -4019.48,
+      "changePercent": -3.91,
       "currency": "ZAR"
     },
     {
@@ -29,8 +29,8 @@
     {
       "name": "NASDAQ",
       "symbol": "IXIC",
-      "value": 24429.89,
-      "change": 101.502,
+      "value": 24429.88,
+      "change": 101.5,
       "changePercent": 0.42,
       "currency": "USD"
     },
@@ -46,9 +46,9 @@
   "currencies": [
     {
       "pair": "USD/ZAR",
-      "rate": 16.9265,
-      "change": 0,
-      "changePercent": 0
+      "rate": 17.3374,
+      "change": 0.0754,
+      "changePercent": 0.44
     },
     {
       "pair": "EUR/ZAR",
@@ -67,17 +67,17 @@
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 3727.8,
-      "change": -136.4,
-      "changePercent": -3.53,
+      "price": 3716.32,
+      "change": -25.58,
+      "changePercent": -0.68,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1366.2,
-      "change": -60.3,
-      "changePercent": -4.23,
+      "price": 1358,
+      "change": -8.2,
+      "changePercent": -0.6,
       "unit": "$/oz"
     },
     {
@@ -91,9 +91,9 @@
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 91.37,
-      "change": -1.77,
-      "changePercent": -1.9,
+      "price": 91.92,
+      "change": -0.03,
+      "changePercent": -0.03,
       "unit": "$/bbl"
     }
   ],
@@ -149,7 +149,7 @@
       },
       {
         "date": "2026-11",
-        "value": 16.9265
+        "value": 17.3374
       }
     ],
     "jseTop40": [
@@ -203,7 +203,7 @@
       },
       {
         "date": "2026-11",
-        "value": 101566.62
+        "value": 98732.67
       }
     ],
     "gold": [
