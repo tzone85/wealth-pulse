@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-20T22:17:47.395Z",
-  "source": "open.er-api.com + Yahoo Finance",
+  "updatedAt": "2026-11-21T04:00:00.000Z",
+  "source": "Twelve Data + Yahoo Finance + CNBC + Global Gold Prices + Kitco + Reuters",
   "indices": [
     {
       "name": "JSE All Share",
@@ -13,9 +13,9 @@
     {
       "name": "JSE Top 40",
       "symbol": "JTOPI",
-      "value": 98385.12,
-      "change": -347.55,
-      "changePercent": -0.35,
+      "value": 96832.98,
+      "change": -1552.14,
+      "changePercent": -1.58,
       "currency": "ZAR"
     },
     {
@@ -30,7 +30,7 @@
       "name": "NASDAQ",
       "symbol": "IXIC",
       "value": 22617.73,
-      "change": -1261.466,
+      "change": -1261.47,
       "changePercent": -5.28,
       "currency": "USD"
     },
@@ -46,9 +46,9 @@
   "currencies": [
     {
       "pair": "USD/ZAR",
-      "rate": 17.4096,
-      "change": 0,
-      "changePercent": 0
+      "rate": 17.5724,
+      "change": 0.0109,
+      "changePercent": 0.06
     },
     {
       "pair": "EUR/ZAR",
@@ -68,16 +68,16 @@
       "name": "Gold",
       "symbol": "XAU",
       "price": 3539,
-      "change": -146.5,
-      "changePercent": -3.98,
+      "change": -88.9,
+      "changePercent": -2.45,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1286,
-      "change": -61.5,
-      "changePercent": -4.56,
+      "price": 1295,
+      "change": -49,
+      "changePercent": -3.65,
       "unit": "$/oz"
     },
     {
@@ -91,9 +91,9 @@
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 92.6,
-      "change": 0.62,
-      "changePercent": 0.67,
+      "price": 92.57,
+      "change": 0.59,
+      "changePercent": 0.64,
       "unit": "$/bbl"
     }
   ],
@@ -149,7 +149,7 @@
       },
       {
         "date": "2026-11",
-        "value": 17.4096
+        "value": 17.5724
       }
     ],
     "jseTop40": [
@@ -203,7 +203,7 @@
       },
       {
         "date": "2026-11",
-        "value": 98385.12
+        "value": 96832.98
       }
     ],
     "gold": [
@@ -311,7 +311,7 @@
       },
       {
         "date": "2026-11",
-        "value": 1286
+        "value": 1295
       }
     ]
   }
