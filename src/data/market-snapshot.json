@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-21T04:00:00.000Z",
-  "source": "Twelve Data + Yahoo Finance + CNBC + Global Gold Prices + Kitco + Reuters",
+  "updatedAt": "2026-11-22T04:00:00.000Z",
+  "source": "Twelve Data + FT/Yahoo Finance + CNBC + GoldPrice.com + Investing.com + Reuters",
   "indices": [
     {
       "name": "JSE All Share",
@@ -46,9 +46,9 @@
   "currencies": [
     {
       "pair": "USD/ZAR",
-      "rate": 17.5724,
-      "change": 0.0109,
-      "changePercent": 0.06
+      "rate": 17.55372,
+      "change": -0.03646,
+      "changePercent": -0.21
     },
     {
       "pair": "EUR/ZAR",
@@ -67,17 +67,17 @@
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 3539,
-      "change": -88.9,
-      "changePercent": -2.45,
+      "price": 3538.19,
+      "change": -86.44,
+      "changePercent": -2.38,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1295,
-      "change": -49,
-      "changePercent": -3.65,
+      "price": 1302.95,
+      "change": -47.3,
+      "changePercent": -3.5,
       "unit": "$/oz"
     },
     {
@@ -149,7 +149,7 @@
       },
       {
         "date": "2026-11",
-        "value": 17.5724
+        "value": 17.55372
       }
     ],
     "jseTop40": [
@@ -257,7 +257,7 @@
       },
       {
         "date": "2026-11",
-        "value": 3539
+        "value": 3538.19
       }
     ],
     "platinum": [
@@ -311,7 +311,7 @@
       },
       {
         "date": "2026-11",
-        "value": 1295
+        "value": 1302.95
       }
     ]
   }
