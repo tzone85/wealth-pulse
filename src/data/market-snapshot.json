@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-22T04:00:00.000Z",
-  "source": "Twelve Data + FT/Yahoo Finance + CNBC + GoldPrice.com + Investing.com + Reuters",
+  "updatedAt": "2026-11-23T04:00:00.000Z",
+  "source": "Exa Finance + Absa/IRESS + Yahoo Finance + Nasdaq + Kitco + Financial Times",
   "indices": [
     {
       "name": "JSE All Share",
@@ -46,9 +46,9 @@
   "currencies": [
     {
       "pair": "USD/ZAR",
-      "rate": 17.55372,
-      "change": -0.03646,
-      "changePercent": -0.21
+      "rate": 17.459636,
+      "change": -0.126164,
+      "changePercent": -0.72
     },
     {
       "pair": "EUR/ZAR",
@@ -67,17 +67,17 @@
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 3538.19,
-      "change": -86.44,
-      "changePercent": -2.38,
+      "price": 3608.6,
+      "change": 75.49,
+      "changePercent": 2.14,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1302.95,
-      "change": -47.3,
-      "changePercent": -3.5,
+      "price": 1309,
+      "change": 14,
+      "changePercent": 1.08,
       "unit": "$/oz"
     },
     {
@@ -91,9 +91,9 @@
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 92.57,
-      "change": 0.59,
-      "changePercent": 0.64,
+      "price": 92.36,
+      "change": -0.21,
+      "changePercent": -0.23,
       "unit": "$/bbl"
     }
   ],
@@ -149,7 +149,7 @@
       },
       {
         "date": "2026-11",
-        "value": 17.55372
+        "value": 17.459636
       }
     ],
     "jseTop40": [
