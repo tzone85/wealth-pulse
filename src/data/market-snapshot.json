@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-24T15:53:36.448Z",
+  "updatedAt": "2026-11-24T23:56:05.496Z",
   "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
@@ -21,25 +21,25 @@
     {
       "name": "S&P 500",
       "symbol": "SPX",
-      "value": 7146.07,
-      "change": -91.1,
-      "changePercent": -1.26,
+      "value": 7201.09,
+      "change": -36.08,
+      "changePercent": -0.5,
       "currency": "USD"
     },
     {
       "name": "NASDAQ",
       "symbol": "IXIC",
-      "value": 23520.77,
-      "change": -568.79,
-      "changePercent": -2.36,
+      "value": 23733.54,
+      "change": -356.023,
+      "changePercent": -1.48,
       "currency": "USD"
     },
     {
       "name": "FTSE 100",
       "symbol": "UKX",
-      "value": 10477.85,
-      "change": -2.97,
-      "changePercent": -0.03,
+      "value": 10467.07,
+      "change": -13.75,
+      "changePercent": -0.13,
       "currency": "GBP"
     }
   ],
@@ -47,8 +47,8 @@
     {
       "pair": "USD/ZAR",
       "rate": 17.4287,
-      "change": 0.0295,
-      "changePercent": 0.17
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "EUR/ZAR",
@@ -67,33 +67,33 @@
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 3584.3,
-      "change": -67.1,
-      "changePercent": -1.84,
+      "price": 3550.7,
+      "change": -11.2,
+      "changePercent": -0.31,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1261.9,
-      "change": -62.3,
-      "changePercent": -4.7,
+      "price": 1257.8,
+      "change": 0,
+      "changePercent": 0,
       "unit": "$/oz"
     },
     {
       "name": "Palladium",
       "symbol": "XPD",
-      "price": 867.5,
-      "change": -28.9,
-      "changePercent": -3.22,
+      "price": 862.5,
+      "change": 1.8,
+      "changePercent": 0.21,
       "unit": "$/oz"
     },
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 89.88,
-      "change": 0.51,
-      "changePercent": 0.57,
+      "price": 90.96,
+      "change": 1.59,
+      "changePercent": 1.78,
       "unit": "$/bbl"
     }
   ],
@@ -257,7 +257,7 @@
       },
       {
         "date": "2026-11",
-        "value": 3584.3
+        "value": 3550.7
       }
     ],
     "platinum": [
@@ -311,7 +311,7 @@
       },
       {
         "date": "2026-11",
-        "value": 1261.9
+        "value": 1257.8
       }
     ]
   }
