@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T15:12:00.585Z",
+  "updatedAt": "2026-11-26T23:52:08.832Z",
   "source": "open.er-api.com + Yahoo Finance",
   "indices": [
     {
@@ -37,9 +37,9 @@
     {
       "name": "FTSE 100",
       "symbol": "UKX",
-      "value": 10619.27,
-      "change": 192.33,
-      "changePercent": 1.84,
+      "value": 10609.3,
+      "change": 182.36,
+      "changePercent": 1.75,
       "currency": "GBP"
     }
   ],
@@ -47,53 +47,53 @@
     {
       "pair": "USD/ZAR",
       "rate": 17.5791,
-      "change": 0.052,
-      "changePercent": 0.3
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "EUR/ZAR",
       "rate": 19.2733,
-      "change": 0.0584,
-      "changePercent": 0.3
+      "change": 0,
+      "changePercent": 0
     },
     {
       "pair": "GBP/ZAR",
       "rate": 23.0276,
-      "change": 0.0571,
-      "changePercent": 0.25
+      "change": 0,
+      "changePercent": 0
     }
   ],
   "commodities": [
     {
       "name": "Gold",
       "symbol": "XAU",
-      "price": 3578.3,
-      "change": 42.5,
-      "changePercent": 1.2,
+      "price": 3562,
+      "change": 26.2,
+      "changePercent": 0.74,
       "unit": "$/oz"
     },
     {
       "name": "Platinum",
       "symbol": "XPT",
-      "price": 1286.4,
-      "change": 44,
-      "changePercent": 3.54,
+      "price": 1277.6,
+      "change": 35.2,
+      "changePercent": 2.83,
       "unit": "$/oz"
     },
     {
       "name": "Palladium",
       "symbol": "XPD",
-      "price": 868,
-      "change": 35.2,
-      "changePercent": 4.23,
+      "price": 861.5,
+      "change": 28.7,
+      "changePercent": 3.45,
       "unit": "$/oz"
     },
     {
       "name": "Brent Crude",
       "symbol": "BRN",
-      "price": 96.12,
-      "change": 1.51,
-      "changePercent": 1.6,
+      "price": 96.53,
+      "change": 1.92,
+      "changePercent": 2.03,
       "unit": "$/bbl"
     }
   ],
@@ -257,7 +257,7 @@
       },
       {
         "date": "2026-11",
-        "value": 3578.3
+        "value": 3562
       }
     ],
     "platinum": [
@@ -311,7 +311,7 @@
       },
       {
         "date": "2026-11",
-        "value": 1286.4
+        "value": 1277.6
       }
     ]
   }
